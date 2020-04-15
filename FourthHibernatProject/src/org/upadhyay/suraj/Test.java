@@ -32,6 +32,17 @@ public class Test
 			StandardServiceRegistryBuilder.destroy( registry );
 		}
 		
+		namedAndNativeQueries(sessionFactory);
+		
+		sessionFactory.close();
+		
+
+	}
+	
+	
+	public static void namedAndNativeQueries(SessionFactory sessionFactory)
+	{
+		
 		//************************OBJECT CREATION START****************************
 		
 		Vehicle v1 = new Vehicle("Audi");
@@ -89,7 +100,6 @@ public class Test
 		System.out.println("query1 received: " + result1.get(0));
 		System.out.println("Vehicle with id: " + id + " is: " + result2.get(0).getName());
 		System.out.println("Vehicle with id: " + (id+1) + " is: " + result3.get(0));
-
 	}
 
 }
