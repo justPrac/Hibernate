@@ -72,7 +72,7 @@ public class Test
 		session.getTransaction().commit();
 		session.close();
 		
-		System.out.println("Query received\n" + result.get(0));
+		System.out.println("Query received:\n" + result.get(0));
 		
 		//System.out.println("Vehicle retrieved: " + vX.getName());
 
