@@ -58,10 +58,10 @@ public class Test
 		//session.save(v3);
 		
 		int id = 4;
-		 Query query = session.createQuery("select count (id) from Vehicle where id > :id");
-		 query.setParameter("id", id);
+		Query<Integer> query = session.createQuery("select count (id) from Vehicle where id > :id");
+		query.setParameter("id", id);
 		 
-		 List<?> result = query.list();
+		List<Integer> result = query.list();
 		
 		//Vehicle vX = (Vehicle)session.;
 		
