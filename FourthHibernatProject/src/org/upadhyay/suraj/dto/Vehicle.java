@@ -4,6 +4,14 @@ import javax.persistence.*;
 
 
 @Entity
+
+//HQL query
+@NamedQuery(name = "Vehicle.getById", 
+			   query = "from Vehicle where id = :id")
+
+//MySQL query
+@NamedNativeQuery(name = "Vehicle.getName",
+				query = "Select name from Vehicle where id = :id")
 public class Vehicle
 {
 	@Id @GeneratedValue
