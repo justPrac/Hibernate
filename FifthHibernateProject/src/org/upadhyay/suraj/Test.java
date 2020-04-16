@@ -1,7 +1,6 @@
 package org.upadhyay.suraj;
 
 import java.util.List;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -37,9 +36,7 @@ public class Test
 		
 		
 		
-		namedAndNativeQueries(sessionFactory);
-		criteriaAPI(sessionFactory);
-		
+		firstLevelCache(sessionFactory);		
 		
 		sessionFactory.close();
 	}
@@ -49,50 +46,18 @@ public class Test
 	 * 
 	 * @param sessionFactory SessionFactory object to use Session objects
 	 */
-	public static void criteriaAPI(SessionFactory sessionFactory)
-	{
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		
-		CriteriaBuilder builder = session.getCriteriaBuilder();
-		CriteriaQuery<String> query = builder.createQuery(String.class);
-		//CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
-		Root<Vehicle> root = query.from(Vehicle.class);
-		
-		query.select(root.get("name"));
-		query.where(builder.greaterThan(root.get("id"), 2));
-		List<String> result = session.createQuery(query).list();
-
-		//query.multiselect(root.get("id"), root.get("name"));
-		//query.where(builder.greaterThan(root.get("id"), 2));
-		//List<?> result = session.createQuery(query).list();
-
-		
-		
-		
-		session.getTransaction().commit();
-		session.close();
-		
-		System.out.println("The total number of vehicles retrieved: " + result.size());
-	}
-	
-	
-	/**
-	 * 
-	 * @param sessionFactory SessionFactory object to use Session objects
-	 */
-	public static void namedAndNativeQueries(SessionFactory sessionFactory)
+	public static void firstLevelCache(SessionFactory sessionFactory)
 	{
 		
 		//************************OBJECT CREATION START****************************
-		
+		/*
 		Vehicle v1 = new Vehicle("Audi");
 		Vehicle v2 = new Vehicle("Tesla");
 		Vehicle v3 = new Vehicle("BMW");
 		Vehicle v4 = new Vehicle("Toyota");
 		Vehicle v5 = new Vehicle("RR");
 		Vehicle v6 = new Vehicle("Aston Martin");
-		
+		*/
 
 		//************************OBJECT CREATION END****************************
 		
@@ -105,30 +70,22 @@ public class Test
 		session.beginTransaction();
 		
 		//************************TRANSACTION START****************************
-		//session.save(v1);
-		//session.save(v2);
-		//session.save(v3);
-		//session.save(v4);
-		//session.save(v5);
-		//session.save(v6);	
+		/*
+		session.save(v1);
+		session.save(v2);
+		session.save(v3);
+		session.save(v4);
+		session.save(v5);
+		session.save(v6);	
+		*/
 		
+		Vehicle vX = (Vehicle)session.get(Vehicle.class, 3);
+		System.out.println("Vehicle vX retrieved: " + vX.getName());
 		
-		int id = 4;
+		vX.setName("BMW2");
 		
-		
-		Query<Integer> query1 = session.createQuery("select count (id) from Vehicle where id > :id");
-		query1.setParameter("id", id);
-		List<Integer> result1 = query1.list();
-		
-		Query<Vehicle> query2 = session.getNamedQuery("Vehicle.getById");
-		query2.setParameter("id", id);
-		List<Vehicle> result2 = query2.list();		
-		
-		
-		Query<Vehicle> query3 = session.getNamedNativeQuery("Vehicle.getName");
-		query3.setParameter("id", id+1);
-		List<Vehicle> result3 = query3.list();
-		
+		Vehicle vY = (Vehicle)session.get(Vehicle.class, 3);
+		System.out.println("Vehicle vY retrieved: " + vY.getName());
 		
 		//************************TRANSACTION END****************************
 		
@@ -138,9 +95,6 @@ public class Test
 		
 		//************************PRINTING AT CONSOLE****************************
 		
-		System.out.println("query1 received: " + result1.get(0));
-		System.out.println("Vehicle with id: " + id + " is: " + result2.get(0).getName());
-		System.out.println("Vehicle with id: " + (id+1) + " is: " + result3.get(0));
 	}
 
 }
