@@ -40,9 +40,8 @@ public class Test
 		
 		
 		
-		//namedAndNativeQueries(sessionFactory);
+		namedAndNativeQueries(sessionFactory);
 		criteriaAPI(sessionFactory);
-
 		
 		
 		sessionFactory.close();
