@@ -2,11 +2,17 @@ package org.upadhyay.suraj;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.upadhyay.suraj.dto.Vehicle;
 
@@ -32,14 +38,49 @@ public class Test
 			StandardServiceRegistryBuilder.destroy( registry );
 		}
 		
-		namedAndNativeQueries(sessionFactory);
+		
+		
+		//namedAndNativeQueries(sessionFactory);
+		criteriaAPI(sessionFactory);
+
+		
 		
 		sessionFactory.close();
-		
-
 	}
 	
 	
+	/**
+	 * 
+	 * @param sessionFactory SessionFactory object to use Session objects
+	 */
+	public static void criteriaAPI(SessionFactory sessionFactory)
+	{
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Vehicle> query = builder.createQuery(Vehicle.class);
+		Root<Vehicle> root = query.from(Vehicle.class);
+		
+		query.select(root);
+		query.where(builder.greaterThan(root.get("id"), 2));
+		
+		List<Vehicle> result = session.createQuery(query).list();
+		
+		
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		System.out.println("The total number of vehicles retrieved: " + result.size());
+	}
+	
+	
+	/**
+	 * 
+	 * @param sessionFactory SessionFactory object to use Session objects
+	 */
 	public static void namedAndNativeQueries(SessionFactory sessionFactory)
 	{
 		
