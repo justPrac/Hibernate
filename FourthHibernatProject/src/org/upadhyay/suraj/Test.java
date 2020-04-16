@@ -59,14 +59,18 @@ public class Test
 		session.beginTransaction();
 		
 		CriteriaBuilder builder = session.getCriteriaBuilder();
-		CriteriaQuery<Vehicle> query = builder.createQuery(Vehicle.class);
+		CriteriaQuery<String> query = builder.createQuery(String.class);
+		//CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
 		Root<Vehicle> root = query.from(Vehicle.class);
 		
-		query.select(root);
+		query.select(root.get("name"));
 		query.where(builder.greaterThan(root.get("id"), 2));
-		
-		List<Vehicle> result = session.createQuery(query).list();
-		
+		List<String> result = session.createQuery(query).list();
+
+		//query.multiselect(root.get("id"), root.get("name"));
+		//query.where(builder.greaterThan(root.get("id"), 2));
+		//List<?> result = session.createQuery(query).list();
+
 		
 		
 		
